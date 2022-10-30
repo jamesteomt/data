@@ -4,3 +4,1473 @@ def factorial_iteration(n):
     for i in range (1,n + 1):
         sums *= i
     return sums
+
+#
+def bubble_sort(array):
+    n = len(array)
+    for outer_index in range (1 , n-1):
+        for inner_index in range(1, n):
+            first_number = array[inner_index - 1]
+            second_number = array[inner_index]
+            if first_number > second_number:
+                array[inner_index - 1] = second_number
+                array[inner_index] = first_number
+    return array
+    
+#
+def insertion_sort(array):
+    n = len(array)
+    for outer_index in range(n):
+        inner_index = outer_index 
+        temp = array[inner_index]
+        while (inner_index > 0) and (temp<array[inner_index-1]):
+            array[inner_index] = array[inner_index-1]
+            inner_index = inner_index - 1
+        array[inner_index] = temp
+    return (array)
+    
+#
+import random
+def gen_random_int(number, seed):
+    mylist=[]
+    random.seed(seed)
+    for i in range(number):
+        mylist.append(i)
+    random.shuffle(mylist)
+    return mylist
+    
+#
+def bubble_sort(array):
+    count = 0
+    n = len(array)
+    swapped = True
+    while swapped is True:
+        swapped = False
+        new_n = 0
+        for inner_index in range(1,n):
+            first_number = array[inner_index - 1]
+            second_number = array[inner_index]
+            count += 1
+            if first_number > second_number:
+                array[inner_index - 1] = second_number
+                array[inner_index] = first_number
+                swapped = True
+                new_n = inner_index
+        n = new_n
+    return count
+    
+def parent_of(index):
+    return ((index-1)//2)
+
+def left_of(index):
+    return ((index * 2)+1)
+    
+def right_of(index):
+    return ((index +1)*2)
+    
+#
+def max_child(array, index, heap_size):
+    if right_of(index) >= heap_size:
+        return left_of(index)
+    elif array[left_of(index)] >= array[right_of(index)]:
+        return left_of(index)
+    else :
+        return right_of(index)
+        
+#
+def max_heapify(array, index, size):
+    current_i = index # current index starting from input i
+    while (left_of(current_i) < size):
+        max_child_i = max_child(array,current_i,size)
+        if array[max_child_i] > array[current_i]:
+            val=array[max_child_i]
+            array[max_child_i] = array[current_i]
+            array[current_i] = val
+        current_i = max_child_i # move to the index of the largest child
+   
+#
+def build_max_heap(array):
+    n = len(array)
+    starting_index = (n // 2) - 1 # start from the middle or non-leaf node
+    for current_index in range(starting_index,-1,-1):
+        max_heapify(array, current_index,n)
+    
+#
+def heapsort(array):
+    build_max_heap(array)
+    heap_end_pos = len(array) - 1
+    while (heap_end_pos > -1):
+        array[0],array[heap_end_pos] = array[heap_end_pos],array[0]
+        max_heapify(array, 0, heap_end_pos)
+        heap_end_pos -= 1
+     
+#
+import time
+import random
+def run_function(f, x):
+    start = time.time()
+    f(x)
+    end = time.time()
+    return end-start
+
+def gen_random_int(number, seed):
+    mylist=[]
+    random.seed(seed)
+    for i in range(number):
+        mylist.append(i)
+    random.shuffle(mylist)
+    return mylist
+ 
+time_builtin = []
+# set the maximum power for 10^power number of inputs
+maxpower = 3
+
+for n in range(1, maxpower + 1):
+    # create array for 10^1, 10^2, etc 
+    # use seed 100
+    array= gen_random_int(10**n, 100)
+    # call run_function with sorted() and array as arguments
+    # result = run_function(None, None) 
+    result = run_function(sorted,array)
+ 
+    time_builtin.append(result)
+print(time_builtin)
+
+#
+def min_child(heap, index):
+    n= len(heap)
+    if right_of(index) >= n :
+        return left_of(index)
+    elif heap[left_of(index)]<heap[right_of(index)]:
+        return left_of(index)
+    else :
+        return right_of(index)
+     
+ #
+def min_heapify(array, index, size):
+    current_i = index # current index starting from input i
+    swapped = True
+    while ( left_of(current_i) < size) and swapped == True:
+        swapped = False
+        min_child_i = min_child(array,current_i)
+        if array[min_child_i] < array[current_i]:
+            array[min_child_i],array[current_i] =array[current_i],array[min_child_i]
+            swapped = True
+        current_i = min_child_i # move to the index of the largest child
+   
+#
+def build_min_heap(array):
+    n = len(array)
+    starting_index = (n // 2) - 1 
+    for current_index in range(starting_index,-1,-1):
+        min_heapify(array, current_index,n)
+  
+#
+def heapsort(array):
+    result = []
+    n = len(array) - 1
+    while (n>-1):
+        build_min_heap(array)
+        result.append(array.pop(0))
+        n -= 1
+    return result
+ 
+#
+def palindrome(s):
+    n = len(s)
+    result = is_palindrome(s,0,n-1)
+    return result
+
+def is_palindrome(s, left, right):
+    if len(s) < 2:
+        return True
+    if s[0] != s[-1]:
+        return False
+    return palindrome(s[1:-1])
+
+#tower of hanoi
+def move_disks(n, from_tower, to_tower, aux_tower):
+    result = []
+    if(n == 1):
+        return[f"Move disk {n} from {from_tower} to {to_tower}."]
+    else:
+        result += move_disks(n-1, from_tower, aux_tower, to_tower)
+        result += [f"Move disk {n} from {from_tower} to {to_tower}."]
+        result += move_disks(n-1,aux_tower, to_tower, from_tower)
+    return result
+
+#
+def merge(array, p, q, r):
+    nleft = q - p +1
+    nright = r - q
+    left_array = array[p:q+1]
+    right_array = array[(q+1):r+1]
+    left = 0
+    right = 0
+    dest = p
+    while(left < nleft) and (right < nright):
+        if left_array[left] <= right_array[right]:
+            array[dest] = left_array[left]
+            left += 1
+        else:
+            array[dest] = right_array[right]
+            right += 1 
+        dest += 1
+    while(left < nleft):
+        array[dest] = left_array[left]
+        left += 1
+        dest += 1
+    while(right < nright):
+        array[dest] = right_array[right]
+        right = right + 1
+        dest = dest + 1
+
+#
+def mergesort_recursive(array, p, r):
+    if((r-p)>0):
+        q = (p+r)//2
+        mergesort_recursive(array,p,q)
+        mergesort_recursive(array,q+1,r)
+        merge(array,p,q,r)
+def mergesort(array):
+    mergesort_recursive(array,0,len(array)-1)
+
+#
+def left_of(index):
+    left = int(index * 2) + 1
+    return left
+
+#
+def right_of(index):
+    right = int((index + 1) * 2)
+    return right
+
+#
+def max_child(array, index, heap_size):
+    largest = index
+    left = (2*index) + 1
+    right = (index+1)*2
+    if right < heap_size and array[right] > array[left]:
+        largest = right
+    elif left < heap_size:
+        largest = left
+    return largest
+
+#
+def max_heapify(array, index, size):
+    largest = max_child(array, index, size)
+    if largest < size and array[index]  < array[largest]:
+        array[index],array[largest] = array[largest],array[index]
+        max_heapify(array, largest, size)
+
+#
+def permutate(s):
+    return perm_recurse("",s)
+    
+def perm_recurse(str1, str2):
+    result = []
+    
+    if str2 == "":
+        result += [str1]
+    else:
+        for i in str2:
+            result += perm_recurse(str1 + i, str2.replace(i,""))
+        
+    return result
+
+#
+def gcd(a, b):
+    if a == 0:
+        return b
+ 
+    return gcd(b % a, a)
+    
+#
+class RacingCar:
+    def __init__(self, name, max_speed):
+        self._name = name
+        self.max_speed = max_speed
+        self._speed = 0
+        self._pos = 0
+        self.finish = -1
+    
+    @property
+    def racer(self):
+        return self._name
+    
+    @racer.setter
+    def racer(self, name):
+        if isinstance(name,str) and name != '':
+            self._name = name
+            
+    @property
+    def speed(self):
+        return self._speed
+
+    @speed.setter
+    def speed(self, val):
+        if isinstance(val,int) and val >= 0 and val <= self.max_speed:
+            self._speed = val
+    
+    @property
+    def pos(self):
+        return self._pos
+    
+    @pos.setter
+    def pos(self, val):
+        if isinstance(val,int) and val >= 0:
+            self._pos = val
+            
+    @property
+    def is_finished(self):
+        if self._pos >= self.finish and self.finish != -1:
+            return True
+        else:
+            return False
+            
+    def start(self, init_speed, finish_dist):
+        self._pos = 0
+        self.speed = init_speed
+        self.finish = finish_dist
+    
+    def race(self, acc):
+        self.speed += acc
+        self._pos += self.speed
+        
+    def __str__(self):
+        return f"Racing Car {self.racer} at position: {self.pos}, with speed: {self.speed}."
+
+#
+import random
+class RacingGame:
+    
+    def __init__(self, seed):
+        self.car_list = {}
+        self._winners = []
+        random.seed(seed)
+        
+    @property
+    def winners(self):
+        if self._winners == []:
+            return(None)
+        else:
+            return(self._winners)
+        
+    def add_car(self, name, speed):
+        self.car_list[name] = RacingCar(name,speed)
+        
+    def start(self, finish):
+        for racer,car in self.car_list.items():
+            car.start(random.randint(0,50), finish)
+    
+    def play(self, finish):
+        self.start(finish)
+        finished_car = 0
+        while True:
+            for racer, car in self.car_list.items():
+                if not car.is_finished:
+                    acc = random.randint(-10, 20)
+                    car.race(acc)
+                    # you can comment out the line below to check the output
+                    # print(car)
+                    if car.is_finished:
+                        self._winners.append(racer)
+                        finished_car +=1
+            if finished_car == len(self.car_list):
+                break
+
+#
+class Stack:
+    def __init__(self):
+        self.__items = []
+        
+    def push(self, item):
+        self.__items.append(item)
+        return self.__items
+
+    def pop(self):
+        if self.__items == []:
+            return None
+        else:
+            return self.__items.pop(-1)
+
+    def peek(self):
+        if self.__items == []:
+            return None
+        else:
+            return self.__items[-1]
+    
+    @property
+    def is_empty(self):
+        if self.__items == []:
+            return True
+        else:
+            return False
+
+    @property
+    def size(self):
+        return len(self.__items)
+        
+#       
+class EvaluatePostfix:
+    operands = "0123456789"
+    operators = "+-*/"
+
+    def __init__(self):
+        self.expression = []
+        self.stack = Stack()
+
+    def input(self, item):
+        self.expression.append(item)
+
+    def evaluate(self):
+        for i in self.expression:
+            if i in self.operands:
+                self.stack.push(i)
+            else:
+                right = int(self.stack.pop())
+                left = int(self.stack.pop())
+                if i == '+':
+                    self.stack.push(left+right)
+                elif i == '-':
+                    self.stack.push(left-right)
+                elif i == '*':
+                    self.stack.push(left*right)
+                else:
+                    self.stack.push(left/right)
+        return(self.stack.peek())
+
+#Queue
+class Queue:
+    def __init__(self):
+        self.left_stack = Stack()
+        self.right_stack = Stack()
+        
+    def enqueue(self,item):
+        self.right_stack.push(item)
+        
+    def dequeue(self):
+        if self.left_stack.is_empty:
+            while not self.right_stack.is_empty:
+                self.left_stack.push(self.right_stack.pop())
+        return self.left_stack.pop()
+    
+    def peek(self):
+        if self.left_stack.is_empty and self.right_stack.is_empty:
+            return None
+        else:
+            if self.left_stack.is_empty:
+                while not self.right_stack.is_empty:
+                    self.left_stack.push(self.right_stack.pop())
+            return self.left_stack.peek()
+
+    @property
+    def is_empty(self):
+        return self.left_stack.is_empty and self.right_stack.is_empty
+
+    @property
+    def size(self):
+        return self.left_stack.size + self.right_stack.size
+        
+# paste the list-based Queue implementation
+class Queue:
+    def __init__(self):
+        self.items = []
+    
+    def enqueue(self,item):
+        self.items.append(item)
+    
+    def dequeue(self):
+        return self.items.pop(0)
+    
+    def peek(self):
+        return(self.items[0])
+    
+    @property
+    def is_empty(self):
+        if self.items == []:
+            return True
+        else:
+            return False
+    
+    @property
+    def size(self):
+        return(len(self.items))
+        
+#
+class RadixSort:
+    def __init__(self, MyList):
+        self.items = MyList
+        self.queues = [Queue() for i in range(10)]
+        
+    def max_digit(self):
+        maximum = 0
+        for item in self.items:
+            item_str = str(item)
+            item_str_len = len(item_str)
+            if item_str_len > maximum:
+                maximum = item_str_len
+        return maximum
+        
+        #return max(list(map(lambda x : len(str(x)), self.items)))
+    
+    def convert_to_str(self, items):
+        ls = []
+        for i in items:
+            ls.append("0"* (self.max_digit() - len(str(i))) + str(i))
+        return ls
+    
+    def sort(self):
+        for i in range(self.max_digit() -1, -1, -1):
+            items_str = self.convert_to_str(self.items)
+            tokens = list(map(lambda x : int(str(x)[i]), items_str))
+            for j in range(len(self.items)):
+                self.queues[tokens[j]].enqueue(self.items[j])
+            
+            self.items = []
+            for z in range(len(self.queues)):
+                for l in range(self.queues[z].size):
+                    self.items.append(self.queues[z].dequeue())
+                    
+        return self.items
+        
+#
+class Vertex:
+    def __init__(self, id_=""):
+        self.id_ = id_
+        self.neighbours = {}
+    
+    def add_neighbour(self, nbr_vertex, weight=0):
+        self.neighbours[nbr_vertex] = weight
+    
+    def get_neighbours(self):
+        return list(self.neighbours.keys())
+    
+    def get_weight(self, neighbour):
+        if neighbour in self.get_neighbours():
+            return self.neighbours[neighbour]
+        else:
+            return None
+    
+    def __eq__(self, other):
+        return self.id_ == other.id_
+    
+    def __lt__(self, other):
+        return self.id_ < other.id_
+    
+    def __hash__(self):
+        return hash(self.id_)
+    
+    def __str__(self):
+        return(f'Vertex {self.id_} is connected to: {", ".join([key.id_ for key in self.neighbours])}')
+        
+#
+class Graph:
+    def __init__(self):
+        self.vertices = {}
+        
+    def _create_vertex(self, id_):
+        return Vertex(id_)
+    
+    def add_vertex(self, id_):
+        self.vertices[id_] = self._create_vertex(id_)
+    
+    def get_vertex(self, id_):
+        if id_ in list(self.vertices.keys()):
+            return self.vertices[id_]
+        else:
+            return None
+    
+    def add_edge(self, start_v, end_v, weight=0):
+        if start_v not in self.vertices:
+            self.add_vertex(start_v)
+        if end_v not in self.vertices:
+            self.add_vertex(end_v)
+        self.vertices[start_v].add_neighbour(self.vertices[end_v],weight)
+    
+    def get_neighbours(self, id_):
+        if id_ in self.vertices:
+            return([key.id_ for key in self.vertices[id_].get_neighbours()])
+        return(None)
+    
+    def __contains__(self, val):
+        return val in self.vertices.keys()
+    
+    def __iter__(self):
+        for k,v in self.vertices.items():
+            yield v 
+        
+    @property
+    def num_vertices(self):
+        return(len(self.vertices))
+
+#
+import sys
+class VertexSearch(Vertex):
+    def __init__(self, id_=""):
+        super().__init__(id_)
+        self.id_ = id_
+        self.colour = "white"
+        self.d = sys.maxsize
+        self.f = sys.maxsize
+        self.parent = None
+
+#
+class GraphSearch(Graph):
+    def _create_vertex(self, id_):
+        return VertexSearch(id_)
+
+#
+import sys
+class Search2D:
+    def __init__(self, g):
+        self.graph = g
+    
+    def clear_vertices(self):
+        for v in self.graph:
+            v.colour = "white"
+            v.d = sys.maxsize
+            v.f = sys.maxsize
+            v.parent = None
+    
+    def __iter__(self):
+        return iter([v for v in self.graph])
+    
+    def __len__(self):
+        return len([v for v in self.graph.vertices])
+        
+#Copy over Queue-list
+class SearchBFS(Search2D):
+
+    def search_from(self, start):
+        queue = Queue()
+        queue.enqueue(start)
+        distance = 0 
+        self.graph.vertices[start].d = 0
+        while queue.size != 0:
+            current = queue.dequeue()
+            self.graph.vertices[current].colour = "black"
+            neighbours = self.graph.vertices[current].get_neighbours()
+            neighbours = list(filter(lambda x : self.graph.vertices[x.id_].colour == "white", neighbours))
+            if len(neighbours) != 0:
+                for neighbour in neighbours:
+                    queue.enqueue(neighbour.id_)
+                    self.graph.vertices[neighbour.id_].colour = "grey"
+                    self.graph.vertices[neighbour.id_].parent = self.graph.vertices[current]
+            if current != start:
+                if self.graph.vertices[current].d == sys.maxsize:
+                    self.graph.vertices[current].d = self.graph.vertices[current].parent.d + 1
+                        
+            
+    def get_shortest_path(self, start, dest):
+        self.clear_vertices()
+        if start in self.graph:
+            self.search_from(start)
+            return self.get_path(start, dest, [])
+        else:
+            return None
+    
+    def get_path(self, start, dest, result):
+        destNode = self.graph.vertices[dest]
+        if start == dest:
+            return [dest] + result
+        elif type(destNode.parent) == type(None):
+            return ["No Path"]
+        else:
+            result = [dest] + result
+            return self.get_path(start, destNode.parent.id_, result)
+            
+#
+def count_degrees(G):
+    return sum([len(val) for val in G.values()])
+
+def count_edges(G):
+    edge_list = []
+    for i in G:
+        for vtx in G[i]:
+            if i+vtx in edge_list or vtx+i in edge_list:
+                continue
+            edge_list.append(i+vtx)
+    return(len(edge_list))
+    
+## Copy Vertex class from Cohort # Copy VertexSearch class from Cohort #Copy Graph over from Cohort
+class GraphSearch(Graph):
+    def _create_vertex(self, id_):
+        return VertexSearch(id_)
+    pass
+    
+#Copy Queue over from Wk4 Homework# copy Search2D over from CS5# copy SearchBFS over from CS6
+class UGraphSearch(GraphSearch):
+    def add_edge(self, start_v, end_v, weight=0):
+        self.vertices[start_v].add_neighbour(self.vertices[end_v],weight)
+        self.vertices[end_v].add_neighbour(self.vertices[start_v],weight)
+        
+#Depth-First-Search
+import sys
+class SearchDFS(Search2D):
+    def __init__(self, g):
+        self.graph = g
+        self.time = 0
+      
+    def search(self):
+        self.clear_vertices()
+        self.time = 0
+        for vtx in self.graph.vertices:
+            if self.graph.vertices[vtx].colour == 'white':
+                self.dfs_visit(vtx)
+        
+    def dfs_visit(self, vert):
+        self.time += 1
+        self.graph.vertices[vert].d = self.time
+        self.graph.vertices[vert].colour = "grey"
+        for neighbour in self.graph.get_neighbours(vert):
+            if self.graph.vertices[neighbour].colour == "white":
+                self.graph.vertices[neighbour].parent = self.graph.vertices[vert]
+                self.dfs_visit(neighbour)
+        self.graph.vertices[vert].colour = "black"
+        self.time += 1
+        self.graph.vertices[vert].f = self.time
+        
+#Topological Sort
+import sys
+import copy
+
+def topological_sort(g):
+    cpy = copy.copy(g)
+    cpy.search()
+    lst = [cpy.graph.vertices[v] for v in cpy.graph.vertices]
+    lst.sort(key=lambda x: x.f, reverse=True)
+    return(lst)
+
+#
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+class Fraction:
+    def __init__(self, num, den):
+        self._num = None
+        self._den = None
+        
+        self.num = num
+        self.den = den 
+    
+    @property
+    def num(self):
+        return self._num
+    
+    @num.setter
+    def num(self, val):
+        if isinstance (val,int):
+            self._num = val
+    
+    @property
+    def den(self):
+        return self._den
+    
+    @den.setter
+    def den(self, val):
+        if isinstance (val,int):
+            if val!= 0:
+                self._den =val
+            else:
+                self._den =1
+                
+    def __str__(self):
+        return f'{self.num}/{self.den}'
+    
+    def simplify(self):
+        #get gcd value of num and denom
+        gcd_val = gcd(self.num,self.den)
+        
+        #update num and denom
+        self.num = self.num // gcd_val
+        self.den = self.den // gcd_val
+        
+        #return Fraction object given the new num and denom
+        return Fraction (self.num,self.den)
+    
+    def __add__(self, other):
+        #cal the num 
+        num = self.num * other.den + other.num * self.den 
+        #cal the denom
+        den = self.den * other.den 
+        
+        #return new fraction object given the calculated num and denom 
+        return Fraction(num,den).simplify()
+    
+    def __eq__(self, other):
+        return (self.num / self.den) == (other.num / other.den)
+        
+#
+class MixedFraction(Fraction):
+    def __init__(self, top, bot, whole=0):
+        num = whole * bot + top
+        
+        super().__init__(num, bot)
+
+    def get_three_numbers(self):
+        whole = self.num // self.den
+        top = self.num % self.den #modulo : remainder to get top value 
+        bot = self.den
+        return (top, bot, whole)
+
+    def __str__(self):
+        if self.num < self.den:
+            return f'{self.num}/{self.den}'
+        else:
+            top, bot, whole = self.get_three_numbers() #call the get_three_numbers method 
+            return f'{whole} {top}/{bot}'
+            
+#
+class Deque(Queue):
+  
+    def add_front(self, item):
+        self.left_stack.push(item)
+      
+    def remove_front(self):
+        return self.dequeue()
+    
+    def add_rear(self, item):
+        self.enqueue(item)
+    
+    def left_to_right(self):
+        while not self.left_stack.is_empty:
+            self.right_stack.push(self.left_stack.pop())
+    
+    def remove_rear(self):
+        if self.right_stack.is_empty:
+            self.left_to_right()
+        return self.right_stack.pop()
+    
+    def peek_front(self):
+        return self.peek()
+    
+    def peek_rear(self):
+        if self.right_stack.is_empty:
+            self.right_to_left()
+            return self.left_stack.peek()
+        else:
+            return self.left_stack.peek()
+            
+#
+import  collections.abc as c
+import numpy as np
+
+class ArrayFixedSize(c.Iterable):
+    def __init__(self, size, dtype=int):
+        self.__data = np.empty(size)
+        self.__data = self.__data.astype(dtype)
+        
+    def __getitem__(self, index):
+        return self.__data[index]
+    
+    def __setitem__(self, index, value):
+        self.__data[index] = value      
+        
+    def __iter__(self):
+        return iter(self.__data)
+    
+    def __len__(self):
+        return len(self.__data)
+        
+    def __str__(self):
+        out = "["
+        for item in self:
+            out += f"{item:}, "
+        if self.__data != []:
+            return out[:-2] + "]"
+        else:
+            return "[]"
+            
+#
+import collections.abc as c
+class MyAbstractList(c.Iterator):
+
+    def __init__(self, list_items):
+        # iterate over every element and call self.append(item)
+        self.size = 0
+        self._idx = 0
+        for i in list_items:
+            self.data.append(i)
+            self.size += 1
+    
+    @property
+    def is_empty(self):
+        if self.size == 0:
+            return True
+        else:
+            return False
+    
+    def append(self, item):
+        # call add_at() method here
+        self._add_at(self.size,item)
+        
+    def remove(self, item):
+        # you should use remove_at() method here
+        for j in range(len(self.data)):
+            if item == self.data[j]:
+                self._remove_at(j)
+                break
+        
+    def __getitem__(self, index):
+        return self.data[index]
+    
+    def __setitem__(self, index, value):
+        self._set_at(index, value)
+        
+    def __delitem__(self, index):
+        self._remove_at(index)
+    
+    def __len__(self):
+        return self.size
+        
+    def __iter__(self):
+        self._idx = 0
+        return self
+        
+    def __next__(self):
+        if self._idx < self.size:
+            n_item = self._get(self._idx)
+            self._idx += 1
+            return n_item
+        else:
+            raise StopIteration
+    
+    # the following methods should be implemented in the child class
+    def _get(self, index):
+        pass
+
+    def _set_at(self, index, item):
+        pass
+
+    def _add_at(self, index, item):
+        pass
+
+    def _remove_at(self, index):
+        pass
+        
+# creating a class PythonList inheriting from MyAbstractList
+# this is just for testing the MyAbstractList class
+
+class PythonList(MyAbstractList):
+    def __init__(self, init_data=[]):
+        self.data = []
+        super().__init__(init_data)
+    
+    def _add_at(self, index, item):
+        self.data.insert(index, item)
+        self.size += 1
+        
+    def _set_at(self, index, item):
+        self.data[index] = item
+        
+    def _remove_at(self, index):
+        self.data.pop(index)
+        self.size -= 1
+        
+    def _get(self, index):
+        if 0 <= index < self.size:
+            return self.data[index]
+        else:
+            raise IndexError()
+            
+    def _index_of(self, item):
+        try:
+            idx = self.data.index(item)
+            return idx
+        except:
+            return -1
+
+#
+import numpy as np
+
+class MyArrayList(MyAbstractList):
+    INITIAL_CAPACITY = 16
+    
+    def __init__(self, items, dtype=int):
+        self.data = ArrayFixedSize(MyArrayList.INITIAL_CAPACITY, dtype)
+        self.size = 0
+        # iterate over every items and call append(item)
+
+        for i in range(len(items)):
+            if i > 15 and i % 16 == 0:
+                self.data += ArrayFixedSize(MyArrayList.INITIAL_CAPACITY, dtype)
+            self.data[i] = items[i]
+            self.size += 1
+    
+    def _add_at(self, index, item):
+        self._ensure_capacity()
+        # do the following:
+        # 1. copy data by shifting it to the right from index position to the end
+        # 2. set item at index
+        # 3. add size by 1
+        for i in range(self.size-1,index -1,-1):
+            self.data[i + 1] = self.data[i]
+        self.size += 1
+        
+        self.data[index] = item
+        
+    def _set_at(self, index, value):
+        self.data[index] = value
+        
+    def _remove_at(self, index):
+        if 0 <= index < self.size:
+            # do the following
+            # 1. get the element at index
+            # 2. copy the data by shifting it to the left from index to the end
+            # 3. reduce size by 1
+            # 4. return the element at index
+            for i in range(index, self.size):
+                self.data[i - 1] = self.data[i]
+            self.size -= 1
+        else:
+            raise IndexError()
+        
+    def _get(self, index):
+        if 0 <= index < self.size:
+            return self.data[index]
+        else:
+            raise IndexError()
+            
+    def _index_of(self, item):
+        # iterate over the data and return the index
+        # if not found return -1
+        for j in range(self.size):
+            if item == self.data[j]:
+                return j
+        return -1
+        
+    def _ensure_capacity(self):
+        if self.size >= len(self.data):
+            new_data = ArrayFixedSize(self.size * 2 + 1)
+            self._copy(self.data, 0, new_data, 0)
+            self.data = new_data
+            
+    def _copy(self, source, idx_s, dest, idx_d):
+        for idx in range(idx_s,len(source)):
+            offset = idx - idx_s
+            dest[idx_d + offset] = source[idx]
+            
+    def _clear(self):
+        self.data = ArrayFixedSize(MyArrayList.INITIAL_CAPACITY)
+        self.size = 0
+        
+    def __str__(self):
+        out = "["
+        for idx in range(self.size):
+            out += f"{self.get(idx):}, "
+        return out[:-2] + "]"
+       
+# Extend the class Fraction to implement the other operators: - * < <= > >=
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+class Fraction:
+    def __init__(self, num, den):
+        self.num = num
+        self.den = den 
+    
+    @property
+    def num(self):
+        return self._num
+    
+    @num.setter
+    def num(self, val):
+        if isinstance (val,int):
+            self._num = val
+    
+    @property
+    def den(self):
+        return self._den
+    
+    @den.setter
+    def den(self, val):
+        if isinstance (val,int):
+            if val!= 0:
+                self._den =val
+            else:
+                self._den =1
+                
+    def __str__(self):
+        return f'{self.num}/{self.den}' # f-string formatting
+    
+    def simplify(self):
+        #get gcd value of num and denom
+        gcd_val = gcd(self.num,self.den)
+        
+        #update num and denom
+        self.num = self.num // gcd_val
+        self.den = self.den // gcd_val
+        
+        #return Fraction object given the new num and denom
+        return Fraction (self.num,self.den)
+    
+    def __add__(self, other):
+        #cal the num 
+        num = self.num * other.den + other.num * self.den 
+        #cal the denom
+        den = self.den * other.den 
+        
+        #return new fraction object given the calculated num and denom 
+        return Fraction(num,den).simplify()
+    
+    def __sub__(self, other):
+        new_num = self.num * other.den - other.num * self.den
+        new_den = self.den * other.den
+        return Fraction(new_num, new_den).simplify()
+    
+    def __mul__(self, other):
+        new_num = self.num * other.num
+        new_den = self.den * other.den
+        return Fraction(new_num, new_den).simplify()
+    
+    def __eq__(self, other):
+        return (self.num / self.den) == (other.num / other.den)
+    
+    def __lt__(self, other):
+        self_num = self.num * other.den
+        other_num = other.num * self.den
+        return self_num < other_num
+    
+    
+    def __le__(self, other):
+        self_num = self.num * other.den
+        other_num = other.num * self.den
+        return self_num <= other_num
+    
+    def __gt__(self, other):
+        self_num = self.num * other.den
+        other_num = other.num * self.den
+        return self_num > other_num
+    
+    def __ge__(self, other):
+        self_num = self.num * other.den
+        other_num = other.num * self.den
+        return self_num >= other_num
+        
+#copy stack, queue and dequeue
+class EvaluateFraction:
+
+    operands = "0123456789"
+    operators = "+-*/"
+    
+    def __init__(self):
+        self.expression = Deque()
+        self.stack = Deque()
+    
+    def input(self, item):
+        if item in self.operands or item in self.operators:
+            self.expression.add_front(item)
+        else:
+            self.expression.add_front(self.get_fraction(item))
+    
+    def evaluate(self):
+        for i in range(self.expression.size):
+            token = self.expression.remove_rear()
+            if type(token) != str :
+                self.stack.add_front(token)
+            elif token in self.operators:
+                right = self.stack.remove_front()
+                left = self.stack.remove_front()
+                self.process_operator(left, right, token)
+                
+        return self.stack.remove_front()
+    
+    def get_fraction(self, inp):
+        return Fraction(int(inp.split("/")[0]), int(inp.split("/")[1]))
+    
+    def process_operator(self, op1, op2, op):
+        if op == "+":
+            self.stack.add_front(op1 + op2)
+        elif op == "-":
+            self.stack.add_front(op1 - op2)
+        elif op == "*":
+            self.stack.add_front(op1 * op2)
+        elif op == "/":
+            self.stack.add_front(op1 * Fraction(op2.den, op2.num))
+            
+#
+class EvaluateMixedFraction(EvaluateFraction):
+    def get_fraction(self, inp):
+        if " " in inp:
+            entire = inp.split(" ")
+            whole = entire[0]
+            frac = entire[1].split("/")
+        else:
+            frac = inp.split("/")
+            whole = 0
+        return MixedFraction(int(frac[0]), int(frac[1]), int(whole))
+    
+    def evaluate(self):
+        answer = None
+        for i in range(self.expression.size):
+            token = self.expression.remove_rear()
+            if type(token) != str :
+                self.stack.add_front(token)
+            elif token in self.operators:
+                right = self.stack.remove_front()
+                left = self.stack.remove_front()
+                if (right is not None and left is not None):
+                    self.process_operator(left, right, token)
+        answer = self.stack.remove_front()
+        return MixedFraction(answer.num, answer.den)
+
+#
+class Node:
+    def __init__(self, e):
+        self.element = e
+        self.__next = None
+               
+    @property
+    def next(self):
+        return self.__next
+    
+    @next.setter
+    def next(self, value):
+        if isinstance(value, Node):
+            self.__next = value
+            
+#
+import collections.abc as c
+class MyAbstractList(c.Iterator):
+    
+    def __init__(self, list_items):
+        # iterate over every element and call self.append(item)
+        self.size = 0
+        self._idx = 0
+        self.data = []
+        for item in list_items:
+            self.data.append(item)
+            self.size += 1
+    
+    @property
+    def is_empty(self):
+        return self.size == 0
+    
+    def append(self, item):
+        # call add_at() method here
+        self._add_at(self.size, item)
+        
+    def remove(self, item):
+        # you should use remove_at() method here
+        for ide in range(len(self.data)):
+            if self.data[ide] == item:
+                self._remove_at(ide)
+                break
+                
+    def __getitem__(self, index):
+        return self._get(index)
+    
+    def __setitem__(self, index, value):
+        # call set_at(index, value) method here
+        self._set_at(index, value)
+        
+    def __delitem__(self, index):
+        # call remove_at() method here
+        self._remove_at(index)
+    
+    def __len__(self):
+        return self.size
+        
+    def __iter__(self):
+        self._idx = 0
+        return self
+        
+    def __next__(self):
+        if self._idx < self.size:
+            n_item = self._get(self._idx)
+            self._idx += 1
+            return n_item
+        else:
+            raise StopIteration
+            
+    def _get(self, index):
+        pass
+
+    def _set_at(self, index, item):
+        pass
+
+    def _add_at(self, index, item):
+        pass
+
+    def _remove_at(self, index):
+        pass
+        
+#
+class MyLinkedList(MyAbstractList):
+    def __init__(self, items):
+        super().__init__(items)
+        if len(self.data) == 0:
+            self.head = None
+            self.tail = None
+        else:
+            self.head = Node(self.data[0])
+            self.head.next = Node(self.data[1])
+            self.tail = Node(self.data[-1])
+            node = self.head.next
+            for i in range(1, self.size - 1):
+                node.next = Node(self.data[i + 1])
+                node = node.next
+        
+    def _get(self, index):
+        # do the following:
+        # 1. traverse to the node at index
+        # 2. return the element of that node
+        current = self.head
+        if(self.size > index):
+            for i in range(index):
+                current = current.next
+            return current.element
+        else:
+            return None
+
+    def _add_first(self, element):
+        # do the following:
+        # 1. create a new Node object using element
+        # 2. set the current head reference as the next reference of the new node
+        # 3. increase size by 1
+        # 4. if this is the last element (no tail) -> set the current node as the tail
+        elementNode = Node(element)
+        elementNode.next = self.head
+        self.size += 1
+        if self.head.next == None:
+            self.tail = self.head
+        self.head = elementNode
+            
+    def _add_last(self, element):
+        # do the following:
+        # 1. create a new Node object using element
+        # 2. if there is no element as tail -> set the new node as both
+        #    the tail and the head
+        # 3. otherwise, -> 
+        #    - set the new node as the next reference of the tail
+        #    - set the next reference of the current node as the tail's next reference
+        # 4. increase size by 1
+        ele = Node(element)
+        if self.tail == None:
+            self.tail = ele
+            self.head = ele
+        else:
+            current = self.head
+            for i in range(self.size - 1):
+                current = current.next
+            current.next = ele
+            self.tail = ele
+        self.size += 1
+        
+    def _add_at(self, index, element):
+        if index == 0:
+            # if insert at first position, call add_first() method
+            self._add_first(element)
+        elif index >= self.size:
+            # if insert at last position, call add_last() method
+            self._add_last(element)
+        else:
+            # if insert in between, do the following:
+            # 1. start from the head, traverse the linked list to get
+            #    the reference at position index-1 using its next reference
+            # 2. create a new Node
+            # 3. set the next of the current node as the next of the new Node
+            # 4. set the new node as the next of the current node
+            # 5. increase the size by 1
+            item = self.head
+            for i in range(index):
+                item = item.next
+            item_before = self.head
+            for i in range(index - 1):
+                item_before = item_before.next
+            element = Node(element)
+            item_before.next = element
+            element.next = item
+            self.size += 1
+            
+    def _set_at(self, index, element):
+        if 0 <= index < self.size:
+            current = self.head
+            for i in range(index):
+                current = current.next
+            current.element = element
+            
+    def _remove_first(self):
+        if self.size == 0:
+            # if list is empty, return None
+            return None
+        else:
+            # otherwise, do the following:
+            # 1. store the head at a temporary variable
+            # 2. set the next reference of the current head to be the head
+            # 3. reduce size by 1
+            # 4. if the new head is now None, it means empty list
+            #    -> set the tail to be None also
+            # 5. return element of the removed node
+            head = self.head
+            if self.size == 1:
+                self.size = 0
+                self.head = None
+                self.tail = None
+            else:
+                self.head = self.head.next
+                self.size -= 1
+                
+            return head.element
+        
+    def _remove_last(self):
+        if self.size == 0:
+            # if the list is empty, return None
+            return None
+        elif self.size == 1:
+            # if there is only one element, just remove that one node 
+            # using some other method
+            tail = self.data[0]
+            self.size = 0
+            self.head = None
+            self.tail = None
+            return tail.element
+        else:
+            # otherwise, do the following:
+            # 1. traverse to the second last node
+            # 2. store the tail of the list to a temporary variable
+            # 3. set the current node as the tail
+            # 4. set the next ref of the tail to be None
+            # 5. reduce the size by 1
+            # 6. return the element of the removed node in the temp var
+            
+            second_last_node = self.head
+            for i in range(self.size - 2):
+                second_last_node = second_last_node.next
+            tail = self.tail
+            self.tail = second_last_node
+            self.size -= 1
+            self.tail.next = None
+            return tail.element
+        
+    def _remove_at(self, index):
+        if index < 0 or index >= self.size:
+            return None
+        elif index == 0:
+            return self._remove_first()
+        elif index == self.size - 1:
+            return self._remove_last()
+        else:
+            # do the following:
+            # 1. traverse to the node at index - 1
+            # 2. get the node at index using next reference
+            # 3. set the next node of the node at index - 1
+            # 4. decrease the size by 1
+            # 5. return the element that is removed
+            node_bef = self.head
+            for i in range(index - 1):
+                node_bef = node_bef.next
+            node_aft = self.head
+            for i in range(index +1):
+                node_aft = node_aft.next
+            node = self._get(index)
+            node_bef.next = node_aft
+            self.size -= 1
+            return node
